@@ -1,1 +1,1 @@
-# wildberries-clone-js
+# Pinterest-clone-js
