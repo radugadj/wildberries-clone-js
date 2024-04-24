@@ -1,0 +1,145 @@
+/* http://meyerweb.com/eric/tools/css/reset/
+   v5.0.2 | 20191019
+   License: none (public domain)
+*/
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans&family=Roboto&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cardo:ital@1&display=swap");
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+main, menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline; }
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, main, menu, nav, section {
+  display: block; }
+
+/* HTML5 hidden-attribute fix for newer browsers */
+*[hidden] {
+  display: none; }
+
+body {
+  line-height: 1; }
+
+menu, ol, ul {
+  list-style: none; }
+
+blockquote, q {
+  quotes: none; }
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none; }
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0; }
+
+.header__container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 28px 15px 24px; }
+.header__title {
+  font-family: "Open Sans";
+  font-size: 16px;
+  font-weight: 400;
+  color: #e60023;
+  font-size: 20px;
+  font-weight: 700; }
+.header__navbar {
+  display: flex;
+  align-items: center;
+  margin-left: 24px; }
+  .header__navbar .navbar__item li {
+    padding: 16px; }
+    .header__navbar .navbar__item li a {
+      font-family: "Raleway";
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      color: #111111; }
+      .header__navbar .navbar__item li a:hover {
+        text-decoration: underline; }
+.header .navbar__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center; }
+  .header .navbar__btn button {
+    font-family: "Raleway";
+    font-size: 16px;
+    font-weight: 700;
+    padding: 11px 12px;
+    border-radius: 24px;
+    border: none;
+    margin: 0 10px 0 0; }
+  .header .navbar__btn-login {
+    color: white;
+    background: #e60023; }
+  .header .navbar__btn__btn-signup {
+    margin-left: 16px;
+    background: #efefef; }
+
+.grid__container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  overflow: hidden; }
+.grid__elem {
+  display: grid;
+  grid-template-columns: repeat(7, 252px);
+  max-height: 0px;
+  visibility: hidden;
+  pointer-events: none; }
+  .grid__elem .column {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: 1s; }
+    .grid__elem .column:nth-child(1) {
+      margin-top: 0;
+      transition-delay: 0s; }
+    .grid__elem .column:nth-child(2) {
+      margin-top: 160px;
+      transition-delay: 0.2s; }
+    .grid__elem .column:nth-child(3) {
+      margin-top: 320px;
+      transition-delay: 0.4s; }
+    .grid__elem .column:nth-child(4) {
+      margin-top: 480px;
+      transition-delay: 0.6s; }
+    .grid__elem .column:nth-child(5) {
+      margin-top: 320px;
+      transition-delay: 0.8s; }
+    .grid__elem .column:nth-child(6) {
+      margin-top: 160px;
+      transition-delay: 1s; }
+    .grid__elem .column:nth-child(7) {
+      margin-top: 0;
+      transition-delay: 1.2s; }
+    .grid__elem .column .item {
+      width: 236px;
+      height: 350px;
+      background: red;
+      border-radius: 10px; }
+    .grid__elem .column .item:not(:first-child) {
+      margin-top: 16px; }
+
+/*# sourceMappingURL=style.css.map */
