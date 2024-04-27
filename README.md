@@ -1,5 +1,3 @@
-
-
 # Pinterest Clone Vanile JavaScript
 
 
@@ -9,9 +7,6 @@
 * CSS3/SASS
 * JavaScript
 * API Requests
-
-
-Demo - [ссылка с title](https://example.com/ "Привет!").
 
 
 ##### Run project.
