@@ -1,17 +1,21 @@
 {
-  "name": "pinterest",
+  "name": "pinterest-clone-js",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "dev": "parcel ./src/index.html",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "parcel build ./src/index.html --no-source-maps"
+    "build": "parcel build ./src/index.html --no-source-maps",
+    "sass": "sass --watch src/style"
   },
   "author": "Alexey Pavlov",
   "license": "ISC",
   "devDependencies": {
     "parcel-bundler": "^1.12.5",
     "sass": "^1.75.0"
+  },
+  "dependencies": {
+    "src": "^1.1.2"
   }
 }
