@@ -1,8 +1,9 @@
 {
   "name": "pinterest-clone-js",
   "version": "1.0.0",
+  "type":"commonjs",
   "description": "",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
     "dev": "parcel ./src/index.html",
     "test": "echo \"Error: no test specified\" && exit 1",

@@ -146,6 +146,44 @@
             height: auto;
         }
     }
+    &__content-board {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: #E9E9E9;
+        width: 40%;
+        height: auto;
+        border-radius: 20px;
+        padding: 10px;
+        margin: 0 auto;
+        margin-left: 10px;
+
+        p {
+            @include font('Open Sans', 16px, 600);
+            color: #000;
+        }   
+
+        span {
+            @include font('Cardo', 16px, 600);
+            color: #000;
+            text-align: center;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            position: relative; 
+            top: 20px; 
+            display: contents;
+            &::before {
+                content: "";
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                width: 100%;
+                height: 1px;
+                background-color: #000;
+            }
+        }
+    }
 
     /* Стили для основного изображения в модальном окне */
     .main-image {
@@ -244,4 +282,8 @@
             width: 100%;
         }
     }
+}
+
+.board-modal {
+        
 }
