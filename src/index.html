@@ -8,30 +8,42 @@
           integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
           crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="./style/style.css">
-
-
 </head>
 <body>
 <header class="header container">
     <div class="header__container">
         <nav class="header__navbar">
             <a class="nav__logo" href="#"><i class="fab fa-pinterest"></i></a>
-            <a href="#" class="active">Home</a>
+            <div id="boards-window"><button href="#" class="active" id="boards-button">Создать доску</button></div>
+            <button id="view-boards-button">Открыть доски</button>
+            <div id="board-modal" class="modal" style="display: none;">
+                <div class="modal__content-board">
+                    <span class="close">&times;</span>
+                    <h2 class="modal__title">Доски</h2>
+                    <ul id="board-list" class="modal__board-list"></ul>
+                    <button id="delete-boards-button">Удалить все доски</button>
+                    <button id="clear-boards-button">Очистить все карточки на досках</button>
+                </div>
+            </div>
             <input type="text" class="nav__search" placeholder="Search" id="nav__search"/>
-            <a href="#" class="nav__icon"><i class="fas fa-bell"></i></a>
-            <a href="#" class="nav__icon"><i class="fas fa-comment-dots"></i></a>
             <a href="#"><img src="./assets/1.jpg" alt=""></a>
         </nav>
     </div>
 </header>
 <div id="loader"></div>
-    <div id="main">
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
+<div id="main">
+    <div class="col"></div>
+    <div class="col"></div>
+    <div class="col"></div>
+    <div class="col"></div>
+    <div id="board-selection-modal" class="modal__selection" style="display: none;">
+        <div class="modal__selection-content">
+            <span class="close">&times;</span>
+            <h2 class="modal__selection-title">Выбор доски</h2>
+            <ul id="board-selection-list" class="modal__selection-board"></ul>
+        </div>
     </div>
-    
-    <script type="module" src="./scripts/main.js"></script>
+</div>
+<script type="module" src="./scripts/main.js"></script>
 </body>
 </html>

@@ -1,7 +1,1 @@
-{
-"version": 3,
-"mappings": "AAAQ,4FAAoF;AACpF,iFAAyE",
-"sources": ["cdn.scss"],
-"names": [],
-"file": "cdn.css"
-}
+{"version":3,"sources":["cdn.scss"],"names":[],"mappings":"AAAQ,4FAAA;AACA,iFAAA","file":"cdn.css"}
