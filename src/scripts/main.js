@@ -3,6 +3,7 @@
 let page = 1;
 let fetching = false;
 let allImagesLoaded = false;
+
 let boards = {};
 
 // Функция для загрузки и создания карточек изображений
@@ -17,7 +18,7 @@ const fetchAndCreateCards = async () => {
             cardsData.forEach((image, index) => {
                 createCard(image, cols[index % cols.length]);
             });
-            hideLoader(); // Скрыть лоадер после создания карточек
+            hideLoader();
         } else {
             const response = await fetch(`https://dog.ceo/api/breeds/image/random/20`);
             const data = await response.json();
@@ -26,7 +27,7 @@ const fetchAndCreateCards = async () => {
                 data.message.forEach((image, index) => {
                     createCard(image, cols[index % cols.length]);
                 });
-                hideLoader(); // Скрыть лоадер после создания карточек
+                hideLoader();
             }
         }
     } catch (error) {
@@ -42,57 +43,48 @@ const hideLoader = () => {
 
 // Функция для открытия модального окна
 const openModal = (image, author, avatar, caption) => {
-    const modal = document.getElementById('card-modal');
-    const modalContent = modal.querySelector('.modal-content');
-    const closeButton = modalContent.querySelector('.close');
-    const addToBoardButton = modalContent.querySelector('.add-to-board-button');
-
-    const modalImgContainer = document.createElement('div');
-    modalImgContainer.classList.add('modal-img-container');
-    const modalImg = document.createElement('img');
-    modalImg.src = image;
-    modalImg.alt = "Random Dog Image";
-    modalImg.classList.add('modal-img');
-    const modalInfo = document.createElement('div');
-    modalInfo.classList.add('modal-info');
-    const modalAvatar = document.createElement('img');
-    modalAvatar.src = avatar;
-    modalAvatar.alt = "Author Avatar";
-    modalAvatar.classList.add('modal-avatar');
-    const modalAuthor = document.createElement('p');
-    modalAuthor.textContent = "Author: " + author;
-    modalAuthor.classList.add('modal-author');
-
-    modalImgContainer.appendChild(modalImg);
-    modalInfo.appendChild(modalAvatar);
-    modalInfo.appendChild(modalAuthor);
-
-    modalContent.insertBefore(modalImgContainer, addToBoardButton);
-    modalContent.insertBefore(modalInfo, addToBoardButton);
-
+    const modal = document.createElement('div');
+    modal.classList.add('modal');
+    modal.innerHTML = `
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <div class="modal-img-container">
+                <img src="${image}" alt="Случайное изображение собаки" class="modal-img">
+            </div>
+            <div class="modal-info">
+                <img src="${avatar}" alt="Аватар автора" class="modal-avatar">
+                <p class="modal-author">Автор: ${author}</p>
+                <button class="add-to-board-button">Добавить в доску</button>
+            </div>
+        </div>
+    `;
+    const closeButton = modal.querySelector('.close-button');
     closeButton.onclick = function () {
         modal.style.display = 'none';
-        while (modalContent.firstChild) {
-            modalContent.removeChild(modalContent.firstChild);
-        }
-        modalContent.appendChild(closeButton);
-        modalContent.appendChild(addToBoardButton);
         localStorage.setItem('modalOpen', false);
     };
 
+    const addToBoardButton = modal.querySelector('.add-to-board-button');
     addToBoardButton.onclick = function () {
         openBoardSelectionModal(image, author, avatar);
     };
 
+    document.body.appendChild(modal);
     modal.style.display = 'block';
     localStorage.setItem('modalState', JSON.stringify({ image, author, avatar, caption }));
     localStorage.setItem('modalOpen', true);
+
+    window.onclick = function (event) {
+        if (event.target === modal) {
+            modal.style.display = "none";
+            localStorage.setItem('modalOpen', false);
+        }
+    };
 };
 
-// Функция для открытия модального окна
+// Функция для открытия модального окна, если оно должно быть открытым
 const modalOpen = localStorage.getItem('modalOpen');
 if (modalOpen === 'true') {
-    // Открываем модальное окно, если оно должно быть открытым
     const savedState = JSON.parse(localStorage.getItem('modalState'));
     const savedImage = savedState.image;
     const savedAuthor = savedState.author;
@@ -104,48 +96,34 @@ if (modalOpen === 'true') {
 const createCard = async (image, col) => {
     const card = document.createElement('div');
     card.classList.add('card');
-    const cardInfo = document.createElement('div');
-    cardInfo.classList.add('card__info');
-    const cardImage = document.createElement('div');
-    cardImage.classList.add('card__image');
-    const img = document.createElement('img');
-    img.src = image;
-    img.alt = "Random Dog Image";
-    img.style.width = "100%";
+
+    const randomAvatar = await fetchRandomAvatar().catch(error => {
+        console.error("Error fetching random avatar:", error);
+        return 'default-avatar.png';
+    });
+
+    const authorName = generateRandomAuthor();
+
+    card.innerHTML = `
+        <div class="card__image">
+            <img src="${image}" alt="Random Dog Image" style="width: 100%;">
+        </div>
+        <div class="card__info">
+            <div class="card__avatar">
+                <img src="${randomAvatar}" alt="Author Avatar" class="avatar__img" style="width: 20px; height: 20px;">
+            </div>
+            <p class="card__name">${authorName}</p>
+        </div>
+    `;
+
+    const img = card.querySelector('.card__image img');
     img.onerror = function () {
         this.parentElement.style.display = "none";
     };
 
-    const cardAvatar = document.createElement('div');
-    cardAvatar.classList.add('card__avatar');
-    const avatarImg = document.createElement('img');
-    avatarImg.classList.add('avatar__img');
-    avatarImg.alt = "Author Avatar";
-    avatarImg.style.width = "20px";
-    avatarImg.style.height = "20px";
-
-    try {
-        const randomAvatar = await fetchRandomAvatar();
-        avatarImg.src = randomAvatar;
-    } catch (error) {
-        console.error("Error fetching random avatar:", error);
-    }
-
-    const authorName = generateRandomAuthor();
-    const authorElement = document.createElement('p');
-    authorElement.classList.add('card__name');
-    authorElement.textContent = authorName;
-
     img.addEventListener('click', function () {
-        openModal(image, authorName, avatarImg.src, "");
+        openModal(image, authorName, randomAvatar, "");
     });
-
-    card.appendChild(cardImage);
-    cardImage.appendChild(img);
-    cardInfo.appendChild(cardAvatar);
-    cardAvatar.appendChild(avatarImg);
-    cardInfo.appendChild(authorElement);
-    card.appendChild(cardInfo);
 
     col.appendChild(card);
 };
@@ -158,140 +136,64 @@ const fetchRandomAvatar = async () => {
         return data.message;
     } catch (error) {
         console.error("Error fetching random avatar:", error);
-        throw error;
+        return null;
     }
 };
 
 // Функция для генерации случайного имени автора
 const generateRandomAuthor = () => {
-    const authors = ["John Doe", "Jane Smith", "Alex Johnson", "Chris Lee"];
-    const randomIndex = Math.floor(Math.random() * authors.length);
-    return authors[randomIndex];
+    const authors = ["John", "Jane", "Alex", "Alice", "Michael", "Emily", "David", "Sophia"];
+    return authors[Math.floor(Math.random() * authors.length)];
 };
 
 // Функция для открытия модального окна выбора доски
 const openBoardSelectionModal = (image, author, avatar) => {
     const boardSelectionModal = document.getElementById('board-selection-modal');
     const boardSelectionList = document.getElementById('board-selection-list');
-
     boardSelectionList.innerHTML = '';
 
     for (const boardName in boards) {
         const listItem = document.createElement('li');
+        const counter = document.createElement('span');
+        counter.textContent = ` (${boards[boardName].length})`;
         listItem.textContent = boardName;
-        listItem.onclick = function () {
+        listItem.appendChild(counter);
+        listItem.addEventListener('click', () => {
             addToBoard(boardName, image, author, avatar);
             boardSelectionModal.style.display = 'none';
-        };
+        });
         boardSelectionList.appendChild(listItem);
     }
 
-    const closeButton = boardSelectionModal.querySelector('.close');
-    closeButton.onclick = function () {
-        boardSelectionModal.style.display = 'none';
-    };
-
+    boardSelectionModal.style.display = 'block';
     window.onclick = function (event) {
         if (event.target === boardSelectionModal) {
-            boardSelectionModal.style.display = 'none';
+            boardSelectionModal.style.display = "none";
         }
     };
-
-    boardSelectionModal.style.display = 'block';
 };
 
-// Функция для добавления изображения в доску
+// Функция для добавления карточки в доску
 const addToBoard = (boardName, image, author, avatar) => {
     if (!boards[boardName]) {
         boards[boardName] = [];
     }
     boards[boardName].push({ image, author, avatar });
-    saveBoardsToLocalStorage();
-};
-
-// Функция для сохранения досок в локальное хранилище
-const saveBoardsToLocalStorage = () => {
     localStorage.setItem('boards', JSON.stringify(boards));
+    updateBoardsWindow();
 };
-
-// Функция для загрузки досок из локального хранилища
-const loadBoardsFromLocalStorage = () => {
-    const savedBoards = localStorage.getItem('boards');
-    if (savedBoards) {
-        boards = JSON.parse(savedBoards);
-    }
-};
-
-// Функция для открытия модального окна досок
-const openBoardsModal = () => {
-    const boardModal = document.getElementById('board-modal');
-    const boardList = document.getElementById('board-list');
-
-    boardList.innerHTML = '';
-
-    for (const boardName in boards) {
-        const listItem = document.createElement('li');
-        listItem.textContent = boardName;
-        boardList.appendChild(listItem);
-    }
-
-    const closeButton = boardModal.querySelector('.close');
-    closeButton.onclick = function () {
-        boardModal.style.display = 'none';
-    };
-
-    window.onclick = function (event) {
-        if (event.target === boardModal) {
-            boardModal.style.display = 'none';
-        }
-    };
-
-    boardModal.style.display = 'block';
-};
-
-
-
-// Функция для удаления всех досок
-const deleteAllBoards = () => {
-    boards = {};
-    saveBoardsToLocalStorage();
-    openBoardsModal();
-};
-
-// Событие для создания новой доски
-document.getElementById('boards-button').onclick = function () {
-    const boardName = prompt('Введите название новой доски:');
-    if (boardName) {
-        boards[boardName] = [];
-        saveBoardsToLocalStorage();
-        openBoardsModal();
-    }
-};
-
-// Событие для открытия модального окна досок
-document.getElementById('view-boards-button').onclick = openBoardsModal;
-
-// Событие для удаления всех досок
-document.getElementById('delete-boards-button').onclick = deleteAllBoards;
-
-// Загрузка досок из локального хранилища при загрузке страницы
-loadBoardsFromLocalStorage();
-
-// Загрузка и создание карточек при загрузке страницы
-fetchAndCreateCards();
-
 
 // Функция для обновления списка досок
 const updateBoardsWindow = () => {
     const boardList = document.getElementById('board-list');
-    boardList.innerHTML = ''; // Очищаем предыдущее содержимое
+    boardList.innerHTML = '';
 
     for (const boardName in boards) {
         const listItem = document.createElement('li');
-        const counter = document.createElement('span'); // Создаем элемент для счетчика
-        counter.textContent = ` (${boards[boardName].length})`; // Устанавливаем количество карточек
+        const counter = document.createElement('span');
+        counter.textContent = ` (${boards[boardName].length})`;
         listItem.textContent = boardName;
-        listItem.appendChild(counter); // Добавляем счетчик к названию доски
+        listItem.appendChild(counter);
         listItem.addEventListener('click', () => {
             openBoardSelectionModal(boardName);
         });
@@ -299,5 +201,60 @@ const updateBoardsWindow = () => {
     }
 };
 
+// Функция для очистки всех карточек в досках
+const clearAllBoardCards = () => {
+    for (const boardName in boards) {
+        boards[boardName] = [];
+    }
+    localStorage.setItem('boards', JSON.stringify(boards));
+    updateBoardsWindow();
+};
 
+// Обработчик для кнопки очистки всех карточек в досках
+document.getElementById('clear-boards-button').addEventListener('click', () => {
+    if (confirm("Вы уверены, что хотите очистить все карточки на всех досках?")) {
+        clearAllBoardCards();
+    }
+});
 
+// Событие для открытия окна создания доски
+document.getElementById('boards-button').addEventListener('click', () => {
+    const boardName = prompt("Введите название новой доски:");
+    if (boardName) {
+        if (!boards[boardName]) {
+            boards[boardName] = [];
+            localStorage.setItem('boards', JSON.stringify(boards));
+            updateBoardsWindow();
+        } else {
+            alert("Доска с таким названием уже существует.");
+        }
+    }
+});
+
+// Событие для открытия окна просмотра досок
+document.getElementById('view-boards-button').addEventListener('click', () => {
+    const boardModal = document.getElementById('board-modal');
+    boardModal.style.display = 'block';
+    window.onclick = function (event) {
+        if (event.target === boardModal) {
+            boardModal.style.display = "none";
+        }
+    };
+});
+
+// Закрытие модального окна для просмотра досок
+document.querySelectorAll('.close').forEach(button => {
+    button.onclick = function () {
+        this.closest('.modal').style.display = 'none';
+    };
+});
+
+// Инициализация сохраненных досок из localStorage при загрузке страницы
+document.addEventListener('DOMContentLoaded', () => {
+    const savedBoards = localStorage.getItem('boards');
+    if (savedBoards) {
+        boards = JSON.parse(savedBoards);
+        updateBoardsWindow();
+    }
+    fetchAndCreateCards();
+});

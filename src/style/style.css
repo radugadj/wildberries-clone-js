@@ -89,8 +89,7 @@ table {
   height: 30px;
   width: 30px;
   border-radius: 50%;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
 }
 .header .nav__logo {
   font-size: 30px;
@@ -136,8 +135,7 @@ table {
 #main .col .card__avatar {
   display: inline-block;
   border-radius: 50%;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   margin: 10px 0;
 }
 #main .col .card__info {
@@ -157,8 +155,7 @@ table {
 #main .col img {
   width: 100%;
   height: auto;
-  -o-object-fit: contain;
-     object-fit: contain;
+  object-fit: contain;
   border-radius: 20px;
 }
 
@@ -240,8 +237,7 @@ table {
 .modal .main-image {
   width: 100%;
   height: auto;
-  -o-object-fit: contain;
-     object-fit: contain;
+  object-fit: contain;
 }
 .modal .image-container {
   display: flex;
@@ -266,6 +262,16 @@ table {
   font-weight: 800;
   color: #E60023;
   text-transform: uppercase;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.modal-info {
+  font-family: "Open Sans";
+  font-size: 16px;
+  font-weight: 800;
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
 }
 
 #loader {
@@ -313,4 +319,80 @@ table {
     grid-template-columns: 1fr;
     width: 100%;
   }
-}/*# sourceMappingURL=style.css.map */
+}
+.modal-img-container {
+  padding: 30px;
+}
+
+button {
+  background: #C1172C;
+  border-radius: 10px;
+  color: #fff;
+  border: none;
+  padding: 10px;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #aaa;
+}
+
+.modal__selection {
+  display: none;
+  position: fixed;
+  z-index: 2;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.9);
+}
+.modal__selection-title {
+  font-family: "Open Sans";
+  font-size: 16px;
+  font-weight: 800;
+  color: #000000;
+  text-transform: uppercase;
+}
+.modal__selection-content {
+  display: flex;
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 600px;
+  position: relative;
+  flex-direction: column;
+  align-content: center;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+.modal__selection-title {
+  padding: 10px;
+}
+.modal__selection-board {
+  padding: 10px;
+}
+.modal__selection-board li {
+  font-family: "Open Sans";
+  font-size: 16px;
+  font-weight: 800;
+  color: #000000;
+  text-transform: uppercase;
+  padding: 10px;
+}
+
+.modal__content-board {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+/*# sourceMappingURL=style.css.map */
